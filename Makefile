@@ -19,7 +19,6 @@ $(foreach var,$(ENVVARS),$(eval $(shell echo export $(var)="$($(var))")))
 
 .DEFAULT_GOAL := help
 
-UBUNTU_VERSION := ${UBUNTU_VERSION}
 IMAGE_VERSION := ${IMAGE_VERSION}
 VERSION := ${IMAGE_VERSION}
 COMMIT_HASH := $(shell git log -1 --pretty=format:"sha-%h")
@@ -87,10 +86,10 @@ _build_image:
 		--tag ${ACTIONS_REPO}/${BUILD_IMAGE}:latest \
 		--tag ${ACTIONS_REPO}/${BUILD_IMAGE}:$(VERSION) \
 		--tag ${ACTIONS_REPO}/${BUILD_IMAGE}:$(COMMIT_HASH) \
-		--build-arg UBUNTU_VERSION=${UBUNTU_VERSION} \
 		--build-arg IMAGE_VERSION=${IMAGE_VERSION} \
+		--provenance=false \
 		$(BUILD_FLAGS) \
-		--ssh default $(BUILD_FLAGS) .
+		--ssh default .
 
 .PHONY: repo_login
 repo_login:
