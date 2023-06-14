@@ -17,7 +17,12 @@ ENV PYTHONUNBUFFERED 1
 
 RUN ln -fs /usr/share/zoneinfo/Europe/London /etc/localtime && \
     apt-get update && \
-    apt-get install -y --no-install-recommends curl git nodejs make ansible ansible-lint rsync && \
+    apt-get install -y curl && \
+    curl -fsSL https://get.docker.com | sh && \
+    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends git make ansible ansible-lint rsync nodejs yarn && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    curl -fsSL https://get.docker.com | sh
+    rm -rf /var/lib/apt/lists/*
